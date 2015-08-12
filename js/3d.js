@@ -19,12 +19,12 @@ scene.add(cube);*/
 // Load Sky Box
 
 var skyUrls = [
-	'obj/hand-gun/03.png',
-	'obj/hand-gun/01.png',
-	'obj/hand-gun/05.png',
-	'obj/hand-gun/04.png',
-	'obj/hand-gun/00.png',
-	'obj/hand-gun/02.png'
+	'obj/nissan/Back.png',
+	'obj/nissan/Bottom.png',
+	'obj/nissan/Top.png',
+	'obj/nissan/Left.png',
+	'obj/nissan/Right.png',
+	'obj/nissan/Front.png'
 
 ];
 
@@ -53,11 +53,6 @@ scene.add(skyBox);
 
 camera.position.z = 5;
 
-var envMapMat = new THREE.MeshPhongMaterial({
-	color: 0xffffff,
-	envMap: cubeMap,
-	shininess: .8
-});
 
 // Lighting
 
@@ -83,10 +78,11 @@ scene.add(light3);
 var loader = new THREE.JSONLoader();
 
 
+/*
 loader.load("obj/hg/gun-pbribl.json", function(geometry, materials){
 	var texture = THREE.ImageUtils.loadTexture("obj/hg/Tex_0008_1.png")
 	var mat = new THREE.MeshPhongMaterial({
-		color: 0xeeeeee,
+		color: 0xffffff,
 		map: texture,
 		envMap: cubeMap,
 		shininess: 1.0
@@ -95,7 +91,32 @@ loader.load("obj/hg/gun-pbribl.json", function(geometry, materials){
 	gun.scale.set(0.05,0.05, 0.05);
 	scene.add(gun);
 
+} );*/
+
+loader.load("obj/nissan/nissan-gt-r-nismo.json", function(geometry, materials){
+	//var texture = THREE.ImageUtils.loadTexture("obj/hg/Tex_0008_1.png")
+
+	console.log(materials);
+
+	//materials.push(mat);
+
+	for(var i = 0; i < materials.length; i++){
+		materials[i].envMap = cubeMap;
+
+		if(materials[i].name =="body-paint"){
+			materials[i].reflectivity = 0.2;
+		}
+	}
+
+
+	var matface = new THREE.MeshFaceMaterial(materials);
+
+	gun = new THREE.Mesh(geometry, matface);
+	gun.scale.set(1,1,1);
+	scene.add(gun);
+
 } );
+
 
 
 // Animation Loop
